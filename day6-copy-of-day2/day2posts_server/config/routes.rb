@@ -1,4 +1,6 @@
 Day2postsServer::Application.routes.draw do
+
+  get 'posts_dict' => 'posts#dict_index'
   resources :posts
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -4,7 +4,18 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
+    sleep(2)
     @posts = Post.all
+  end
+  
+  # GET /posts_dict
+  # GET /posts_dict.json
+  def dict_index
+    @posts = Post.all
+    respond_to do |format|
+      format.html
+      format.json {render action: 'dict_index'}
+    end
   end
 
   # GET /posts/1
