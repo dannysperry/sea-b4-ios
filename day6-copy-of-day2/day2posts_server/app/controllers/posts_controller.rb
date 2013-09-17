@@ -1,23 +1,14 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-
+  # http_basic_authenticate_with name: "cookiemonster", password: "secret"
+  
   # GET /posts
   # GET /posts.json
   def index
-    sleep(2)
+    # sleep(2)
     @posts = Post.all
   end
   
-  # GET /posts_dict
-  # GET /posts_dict.json
-  def dict_index
-    @posts = Post.all
-    respond_to do |format|
-      format.html
-      format.json {render action: 'dict_index'}
-    end
-  end
-
   # GET /posts/1
   # GET /posts/1.json
   def show
@@ -34,13 +25,16 @@ class PostsController < ApplicationController
 
   # POST /posts
   # POST /posts.json
-  def create
+  def create    
     @post = Post.new(post_params)
-
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @post }
+        format.json { 
+          @post.photo_from_url params[:post][:photo_url]
+          @post.save!
+          render action: 'show', status: :created, location: @post 
+        }
       else
         format.html { render action: 'new' }
         format.json { render json: @post.errors, status: :unprocessable_entity }
@@ -80,6 +74,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :content, :userName)
+      params.require(:post).permit(:title, :content, :userName, :photo)
     end
 end
